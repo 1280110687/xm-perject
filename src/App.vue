@@ -1,31 +1,33 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div class="wrapper">
+    <router-view v-slot="{ Component }">
+      <transition>
+        <component :is="Component" />
+      </transition>
+    </router-view>
+    <Tabbar placeholder route v-show="showFooter">
+      <TabbarItem icon="home-o" replace to="/">Home</TabbarItem>
+      <TabbarItem icon="search" replace to="/about">About</TabbarItem>
+      <TabbarItem icon="friends-o" replace to="/todoList">ToDo</TabbarItem>
+      <TabbarItem icon="setting-o" replace to="/luckdraw">LuckDraw</TabbarItem>
+    </Tabbar>
   </div>
-
-  <router-view />
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script lang="ts">
+import { defineComponent } from "vue";
+import { Tabbar, TabbarItem } from "vant";
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+export default defineComponent({
+  name: "App",
+  components: {
+    Tabbar,
+    TabbarItem,
+  },
+  computed: {
+    showFooter() {
+      return this.$route.path.split("/").length < 3;
+    },
+  }
+})
+</script>

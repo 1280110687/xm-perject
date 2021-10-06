@@ -1,25 +1,15 @@
-import { createApp, defineAsyncComponent } from "vue";
-import App from "./App.vue";
-import { createHead } from "@vueuse/head";
-import router from "./router";
-import store from "./store";
-import "vant/lib/index.css";
-// 适配个浏览器样式;
-import "normalize.css/normalize.css";
-// 转 rem
-import resizeFontsize from "@/common/utils/rem/rem";
-resizeFontsize();
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store'
+import './assets/css/base.css'
+import './assets/css/main.styl'
+import BaseComponents from './components/base'
+import BaseDirective from './directive'
 
-import { registerVant } from "./plugins/vant.plugin";
+const app = createApp(App)
 
-const AsyncComp = defineAsyncComponent(
-    () => import("@/components/globalComponents/ui-button/index.vue"),
-);
+app.use(BaseComponents)
+app.use(BaseDirective)
 
-const app = createApp(App).use(store).use(router);
-// 全局組件註冊
-app.component("async-component", AsyncComp);
-const head = createHead();
-app.use(head);
-registerVant(app);
-app.mount("#app");
+app.use(store).use(router).mount('#app')
